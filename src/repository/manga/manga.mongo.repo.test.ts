@@ -107,7 +107,13 @@ describe('Given the User Repo ', () => {
     test('Then it should throw an error 402', async () => {
       (MangaModel.findByIdAndUpdate as jest.Mock).mockResolvedValue(undefined);
       const mockUser = {
-        id: '1',
+        id: 'string',
+        image: 'string',
+        name: 'string',
+        description: 'string',
+        author: 'string',
+        category: 'string',
+        firstChap: ['asda'],
       };
 
       expect(() => repo.updateManga(mockUser)).rejects.toThrow();
