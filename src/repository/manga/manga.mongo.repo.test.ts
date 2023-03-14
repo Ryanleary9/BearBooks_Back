@@ -63,6 +63,7 @@ describe('Given the User Repo ', () => {
           name: 'string',
           description: 'string',
           author: 'string',
+          price: 2,
           category: 'string',
           firstChap: ['asda'],
         },
@@ -74,6 +75,7 @@ describe('Given the User Repo ', () => {
         name: 'string',
         description: 'string',
         author: 'string',
+        price: 2,
         category: 'string',
         firstChap: ['asda'],
       };
@@ -113,6 +115,7 @@ describe('Given the User Repo ', () => {
         description: 'string',
         author: 'string',
         category: 'string',
+        price: 2,
         firstChap: ['asda'],
       };
 
