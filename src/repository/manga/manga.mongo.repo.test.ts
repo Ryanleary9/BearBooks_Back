@@ -64,7 +64,6 @@ describe('Given the User Repo ', () => {
           description: 'string',
           author: 'string',
           category: 'string',
-          price: 12,
           firstChap: ['asda'],
         },
       ]);
@@ -76,7 +75,6 @@ describe('Given the User Repo ', () => {
         description: 'string',
         author: 'string',
         category: 'string',
-        price: 12,
         firstChap: ['asda'],
       };
       const result = await repo.createManga(mockUser);
