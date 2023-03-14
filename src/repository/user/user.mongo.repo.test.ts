@@ -41,13 +41,10 @@ describe('Given the User Repo ', () => {
 
   describe('when the method create is used  ', () => {
     test('Then it should create the user', async () => {
-      (UserModel.create as jest.Mock).mockResolvedValue([
-        { email: '2', passwd: '3' },
-      ]);
+      (UserModel.create as jest.Mock).mockResolvedValue([{ email: '2' }]);
 
       const mockUser = {
         email: '2',
-        passwd: '3',
       };
       const result = await repo.create(mockUser);
       expect(UserModel.create).toHaveBeenCalled();
