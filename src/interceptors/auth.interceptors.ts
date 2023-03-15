@@ -1,11 +1,10 @@
 import createDebug from 'debug';
 import { User } from '../entities/user';
-import { UserRepo } from '../repository/user/user.repo.interface';
-import { Response, NextFunction } from 'express';
+import { UserRepo } from '../repository/user/user.repo.interface.js';
+import { Response, NextFunction, Request } from 'express';
 import { HTTPError } from '../errors/errors.js';
 import { Auth } from '../services/auth.js';
 import jwt from 'jsonwebtoken';
-import { Request } from 'express';
 
 export interface RequestPlus extends Request {
   info?: PayloadToken;
