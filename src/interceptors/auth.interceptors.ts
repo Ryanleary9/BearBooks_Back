@@ -1,10 +1,21 @@
 import createDebug from 'debug';
 import { User } from '../entities/user';
 import { UserRepo } from '../repository/user/user.repo.interface';
-import { RequestPlus } from '../interfaces/request';
 import { Response, NextFunction } from 'express';
 import { HTTPError } from '../errors/errors.js';
 import { Auth } from '../services/auth.js';
+import jwt from 'jsonwebtoken';
+import { Request } from 'express';
+
+export interface RequestPlus extends Request {
+  info?: PayloadToken;
+}
+
+export interface PayloadToken extends jwt.JwtPayload {
+  id: string;
+  email: string;
+  role: string;
+}
 
 const debug = createDebug('BB:interceptor');
 
