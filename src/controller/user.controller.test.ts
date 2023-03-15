@@ -2,7 +2,7 @@ import { User } from '../entities/user';
 import { UserRepo } from '../repository/user/user.repo.interface';
 import { Auth } from '../services/auth';
 import { UsersController } from './user.controller';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 jest.mock('../services/auth');
 
