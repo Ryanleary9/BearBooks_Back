@@ -4,6 +4,7 @@ import express, { NextFunction, Response, Request } from 'express';
 import morgan from 'morgan';
 import { CustomError } from './errors/errors.js';
 import { userRouter } from './router/user.router.js';
+import { mangaRouter } from './router/manga.router.js';
 
 const debug = createDebug('BB:app');
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 app.use('/users', userRouter);
+app.use('/manga', mangaRouter);
 
 app.use(
   (error: CustomError, _req: Request, resp: Response, _next: NextFunction) => {
