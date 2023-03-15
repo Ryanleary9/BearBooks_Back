@@ -39,6 +39,21 @@ describe('Given the User Repo ', () => {
     });
   });
 
+  describe('Given the search method', () => {
+    test('Then it should search with a keyword ', async () => {
+      (UserModel.find as jest.Mock).mockResolvedValue({
+        key: 'user',
+        value: 'asdasdas@aasdsa.es',
+      });
+      const result = await repo.search({
+        key: 'user',
+        value: 'asdasdas@aasdsa.es',
+      });
+      expect(UserModel.find).toHaveBeenCalled();
+      expect(result).toEqual({ key: 'user', value: 'asdasdas@aasdsa.es' });
+    });
+  });
+
   describe('when the method create is used  ', () => {
     test('Then it should create the user', async () => {
       (UserModel.create as jest.Mock).mockResolvedValue([{ email: '2' }]);
