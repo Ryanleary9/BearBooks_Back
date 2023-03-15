@@ -15,7 +15,7 @@ export default {
   coveragePathIgnorePatterns: [
     'index.ts',
     'app.ts',
-    'routers',
+    'router',
     'config.ts',
     'user.mongo.model.ts',
     'manga.mongo.model.ts',
