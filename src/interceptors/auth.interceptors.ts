@@ -5,7 +5,8 @@ import { Response, NextFunction, Request } from 'express';
 import { HTTPError } from '../errors/errors.js';
 import { Auth } from '../services/auth.js';
 import jwt from 'jsonwebtoken';
-
+import { Manga } from '../entities/manga';
+import { MangaRepo } from '../repository/manga/manga.repo.interface';
 export interface RequestPlus extends Request {
   info?: PayloadToken;
 }
@@ -19,7 +20,7 @@ export interface PayloadToken extends jwt.JwtPayload {
 const debug = createDebug('BB:interceptor');
 
 export class AuthInterceptor {
-  constructor(public repoUsers: UserRepo<User>) {
+  constructor(public repoUsers: MangaRepo<Manga>) {
     debug('Instantiate');
   }
 

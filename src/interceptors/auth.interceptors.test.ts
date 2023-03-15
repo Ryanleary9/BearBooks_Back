@@ -4,17 +4,19 @@ import { UserRepo } from '../repository/user/user.repo.interface';
 import { AuthInterceptor, RequestPlus } from './auth.interceptors';
 import { Auth } from '../services/auth';
 import { HTTPError } from '../errors/errors';
+import { MangaRepo } from '../repository/manga/manga.repo.interface';
+import { Manga } from '../entities/manga';
 
 jest.mock('../services/auth');
 
 describe('Given AuthInterceptor class', () => {
-  const repo: UserRepo<User> = {
-    create: jest.fn(),
-    query: jest.fn(),
-    queryID: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    search: jest.fn(),
+  const repo: MangaRepo<Manga> = {
+    createManga: jest.fn(),
+    getAllMangas: jest.fn(),
+    getOneManga: jest.fn(),
+    updateManga: jest.fn(),
+    deleteManga: jest.fn(),
+    searchManga: jest.fn(),
   };
   const interceptor = new AuthInterceptor(repo);
 
