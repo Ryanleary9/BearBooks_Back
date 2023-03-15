@@ -1,6 +1,5 @@
 import { Manga } from '../entities/manga';
 import { MangaRepo } from '../repository/manga/manga.repo.interface';
-import { Auth } from '../services/auth';
 import { MangaController } from './manga.controller';
 import { Request, Response } from 'express';
 
