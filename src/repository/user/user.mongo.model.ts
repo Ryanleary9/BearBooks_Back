@@ -22,6 +22,10 @@ const userSchema = new Schema<User>({
   pfp: {
     type: String,
   },
+  role: {
+    type: String,
+    required: true,
+  },
   surname: {
     type: String,
     required: true,
