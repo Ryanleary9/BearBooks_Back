@@ -7,6 +7,7 @@ export default {
     'config.ts',
     'user.mongo.model.ts',
     'manga.mongo.model.ts',
+    'user.router.ts',
   ],
   resolver: 'jest-ts-webcompat-resolver',
   collectCoverageFrom: ['src/**/*.ts'],
@@ -17,5 +18,6 @@ export default {
     'config.ts',
     'user.mongo.model.ts',
     'manga.mongo.model.ts',
+    'user.router.ts',
   ],
 };

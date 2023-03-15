@@ -32,6 +32,11 @@ export class UserMongoRepo implements UserRepo<User> {
     return data;
   }
 
+  async search(query: { key: string; value: unknown }): Promise<User[]> {
+    const data = await UserModel.find({ [query.key]: query.value });
+    return data;
+  }
+
   async create(info: Partial<User>): Promise<User> {
     const data = await UserModel.create(info);
     return data;
