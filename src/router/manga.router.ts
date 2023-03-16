@@ -17,12 +17,6 @@ mangaRouter.post(
   interceptor.admin,
   controller.newManga.bind(controller)
 );
-mangaRouter.post(
-  '/add',
-  interceptor.logged,
-  interceptor.admin,
-  controller.newManga.bind(controller)
-);
 mangaRouter.patch(
   '/update/:id',
   interceptor.logged,
