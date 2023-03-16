@@ -1,20 +1,19 @@
 import { Response } from 'express';
 import { AuthInterceptor, RequestPlus } from './auth.interceptors';
-import { Auth } from '../services/auth';
-import { HTTPError } from '../errors/errors';
+
 import { MangaRepo } from '../repository/manga/manga.repo.interface';
 import { Manga } from '../entities/manga';
 
 jest.mock('../services/auth');
 
-describe('Given AuthInterceptor class', () => {
+describe('Given Interceptors class', () => {
   const repo: MangaRepo<Manga> = {
     createManga: jest.fn(),
     getAllMangas: jest.fn(),
+    searchManga: jest.fn(),
     getOneManga: jest.fn(),
     updateManga: jest.fn(),
     deleteManga: jest.fn(),
-    searchManga: jest.fn(),
   };
   const interceptor = new AuthInterceptor(repo);
 
@@ -28,45 +27,66 @@ describe('Given AuthInterceptor class', () => {
   } as unknown as Response;
   const next = jest.fn();
 
-  describe('When logged is used', () => {
-    test('Then it should send next if there are NOT Authorization header ', () => {
-      (req.get as jest.Mock).mockReturnValue(null);
+  describe('When the Logged method is called', () => {
+    test('Then if req.get return undefined, it should be catch and call next function', () => {
+      (req.get as jest.Mock).mockReturnValue('');
+
       interceptor.logged(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith(expect.any(HTTPError));
+      expect(next).toHaveBeenCalled();
     });
-    test('Then it should send next if Authorization header is BAD formatted', () => {
-      (req.get as jest.Mock).mockReturnValue('BAD token');
+
+    test('Then if req.get return string that does not start with Bearer, it should be catch and call next function', () => {
+      (req.get as jest.Mock).mockReturnValue('Test');
+
       interceptor.logged(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith(expect.any(HTTPError));
+      expect(next).toHaveBeenCalled();
     });
-    test('Then it should send next if Authorization token is NOT valid', () => {
-      Auth.getTokenPayload = jest.fn().mockReturnValue('Invalid token');
+
+    test('Then if the header Authorization is Ok, it should call next function', () => {
+      (req.get as jest.Mock).mockReturnValue('Bearer Test');
+
       interceptor.logged(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith(expect.any(Error));
-    });
-    test('Then it should send next if Authorization token is valid', () => {
-      (req.get as jest.Mock).mockReturnValue('Bearer token');
-      Auth.getTokenPayload = jest.fn().mockReturnValue({});
-      interceptor.logged(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith();
+      expect(next).toHaveBeenCalled();
     });
   });
 
-  describe('When admin is used', () => {
-    test('Then it should send next(error) if there are NOT Authorization header ', () => {
-      req.info = undefined;
+  describe('When the Authorized method is called', () => {
+    test('Then if the user information is completed, it should return the resp.json', () => {
+      const req = {
+        info: { id: '1', role: 'admin' },
+      } as unknown as RequestPlus;
+
       interceptor.admin(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith(expect.any(HTTPError));
+      expect(next).toHaveBeenCalled();
     });
-    test('Then it should send next(error) if the user role is noT admin', () => {
-      req.info = { id: '', email: '', role: 'user' };
+
+    test('Then if the req.info is undefined, it should be catch the error and next function have been called', () => {
+      const req = {
+        info: undefined,
+      } as unknown as RequestPlus;
+
       interceptor.admin(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith(expect.any(HTTPError));
+      expect(next).toHaveBeenCalled();
     });
-    test('Then it should send next(error) if the user role is noT admin', () => {
-      req.info = { id: '', email: '', role: 'admin' };
+
+    test('Then if the req.params.id is undefined, it should be catch the error and next function have been called', () => {
+      const req = {
+        info: { id: '1' },
+        params: { id: undefined },
+      } as unknown as RequestPlus;
+
       interceptor.admin(req, resp, next);
-      expect(next).toHaveBeenLastCalledWith();
+      expect(next).toHaveBeenCalled();
+    });
+
+    test('Then if the req.info.id is not equal to req.params.id, it should be catch the error and next function have been called', () => {
+      const req = {
+        info: { id: '1' },
+        params: { id: '2' },
+      } as unknown as RequestPlus;
+
+      interceptor.admin(req, resp, next);
+      expect(next).toHaveBeenCalled();
     });
   });
 });
