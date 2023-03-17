@@ -15,6 +15,31 @@ const corsOptions = {
   origin: '*',
 };
 
+app.get('/', (_req, resp) => {
+  resp.json({
+    name: 'Bear Books API',
+    routes: {
+      user: {
+        route: '/user',
+        userRoutes: {
+          login: '/login',
+          register: '/register',
+        },
+      },
+
+      manga: {
+        route: '/manga',
+        mangaRoutes: {
+          getMangas: '/list',
+          getOneManga: '/list/:id',
+          createManga: '/add',
+          updateManga: '/update/:id',
+          deleteManga: '/delete/:id',
+        },
+      },
+    },
+  });
+});
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors(corsOptions));
