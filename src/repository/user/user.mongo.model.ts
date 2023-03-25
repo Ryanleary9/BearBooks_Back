@@ -1,42 +1,41 @@
 import { Schema, model } from 'mongoose';
 import { User } from '../../entities/user.js';
 
-const userSchema = new Schema<User>({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  id: {
-    type: String,
-    unique: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  passwd: {
-    type: String,
-    required: true,
-  },
-  pfp: {
-    type: String,
-  },
-  role: {
-    type: String,
-    required: true,
-  },
-  surname: {
-    type: String,
-    required: true,
-  },
-  kart: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+const userSchema = new Schema<User>(
+  {
+    id: {
+      type: String,
     },
-  ],
-});
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    name: {
+      type: String,
+    },
+    passwd: {
+      type: String,
+      required: true,
+    },
+    pfp: {
+      type: String,
+    },
+    role: {
+      type: String,
+    },
+    surname: {
+      type: String,
+    },
+    kart: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Manga',
+      },
+    ],
+  },
+  { strict: false }
+);
 
 userSchema.set('toJSON', {
   transform(_document, returnedObject) {
