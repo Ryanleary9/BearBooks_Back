@@ -225,7 +225,7 @@ describe('Given the UserController ', () => {
       expect(resp.status).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
-    test('Then it should add manga to kart ', async () => {
+    test('Then if there isnt any id in params it should throw an error', async () => {
       const req = {
         info: {
           id: 'asda',
@@ -253,7 +253,7 @@ describe('Given the UserController ', () => {
       await controller.addMangaKart(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-    test('Then it should add manga to kart ', async () => {
+    test('Then if the the manga that ur looking for doesnt exists it should throww an error ', async () => {
       const req = {
         info: {
           id: 'asda',
@@ -274,7 +274,7 @@ describe('Given the UserController ', () => {
       await controller.addMangaKart(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-    test('Then it should add manga to kart ', async () => {
+    test('Then if you are not logged in and you try to add a manga it should throw an error ', async () => {
       const req = {
         params: {
           id: '123',
