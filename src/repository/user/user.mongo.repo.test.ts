@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { UserModel } from './user.mongo.model';
 import { UserMongoRepo } from './user.mongo.repo';
 
@@ -29,6 +30,16 @@ describe('Given the User Repo ', () => {
       expect(UserModel.findById).toHaveBeenCalled();
       expect(result).toEqual({ id: '1' });
     });
+    test('Then it should return a user ', async () => {
+      (UserModel.findById as jest.Mock).mockResolvedValue({
+        id: undefined,
+        _id: '1',
+      });
+      const id = '1';
+      const result = await repo.queryID(id);
+      expect(UserModel.findById).toHaveBeenCalled();
+      expect(result).toEqual({ id: '1', _id: '1' });
+    });
   });
   describe('When the method queryID is used and the id is wrong', () => {
     test('Then it should throw an error ', async () => {
@@ -41,16 +52,21 @@ describe('Given the User Repo ', () => {
 
   describe('Given the search method', () => {
     test('Then it should search with a keyword ', async () => {
-      (UserModel.find as jest.Mock).mockResolvedValue({
-        key: 'user',
-        value: 'asdasdas@aasdsa.es',
-      });
+      (UserModel.find as jest.Mock).mockResolvedValue([
+        {
+          _id: '641b0c2be3351c85de446eab' as unknown as Types.ObjectId,
+        },
+      ]);
       const result = await repo.search({
         key: 'user',
         value: 'asdasdas@aasdsa.es',
       });
       expect(UserModel.find).toHaveBeenCalled();
-      expect(result).toEqual({ key: 'user', value: 'asdasdas@aasdsa.es' });
+      expect(result).toEqual([
+        {
+          id: '641b0c2be3351c85de446eab',
+        },
+      ]);
     });
   });
 
