@@ -85,7 +85,7 @@ describe('Given the UserController ', () => {
       expect(resp.status).toHaveBeenCalled();
       expect(resp.json).toHaveBeenCalled();
     });
-    test('Then if the user information is completed it shoudl return, th  resp.status, and the resp.json ', async () => {
+    test('Then if the password is missing, it should execute the next function', async () => {
       const req = {
         body: {
           name: 'asdadas@aefa.es',
@@ -99,7 +99,7 @@ describe('Given the UserController ', () => {
       expect(mockRepo.create).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
-    test('Then if the user information is completed it shoudl return, th  resp.status, and the resp.json ', async () => {
+    test('Then if the email is missing, it should execute the next function', async () => {
       const req = {
         body: {
           name: 'asdadas@aefa.es',
@@ -113,7 +113,7 @@ describe('Given the UserController ', () => {
       expect(mockRepo.create).toHaveBeenCalled();
       expect(next).toHaveBeenCalled();
     });
-    test('Then if the user information is completed it shoudl return, th  resp.status, and the resp.json ', async () => {
+    test('Then if the email and password is missing, it should execute the next function ', async () => {
       const req = {
         body: {
           name: 'asdadas@aefa.es',
@@ -155,7 +155,7 @@ describe('Given the UserController ', () => {
       await controller.login(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-    test('Then if the user information has no password it should execute the next function', async () => {
+    test('Then if the password is incorrect, it should execute the next function', async () => {
       const req = {
         body: {
           email: 'asdasd',
@@ -165,7 +165,7 @@ describe('Given the UserController ', () => {
       await controller.login(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
-    test('Then if the user information is compelted,  it shoudl return the resp.status and resp.json ', async () => {
+    test('Then if the email is not found, it should execute the next function', async () => {
       const req = {
         body: {
           email: 'test',
