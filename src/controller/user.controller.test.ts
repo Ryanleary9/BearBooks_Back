@@ -196,18 +196,17 @@ describe('Given the UserController ', () => {
   });
 
   describe('when the add to kart method is used', () => {
+    const req = {
+      info: {
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+      },
+      params: {
+        id: 'sadadas',
+      },
+    } as unknown as RequestPlus;
     test('Then it should add manga to kart ', async () => {
-      const req = {
-        info: {
-          id: 'asda',
-          email: 'asda',
-          role: 'user',
-        },
-        params: {
-          id: 'sadadas',
-        },
-      } as unknown as RequestPlus;
-
       (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUser);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
@@ -254,17 +253,6 @@ describe('Given the UserController ', () => {
       expect(next).toHaveBeenCalled();
     });
     test('Then if the the manga that ur looking for doesnt exists it should throww an error ', async () => {
-      const req = {
-        info: {
-          id: 'asda',
-          email: 'asda',
-          role: 'user',
-        },
-        params: {
-          id: '123',
-        },
-      } as unknown as RequestPlus;
-
       (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUser);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue(undefined);
@@ -294,18 +282,17 @@ describe('Given the UserController ', () => {
     });
   });
   describe('Given the delete kart mehtod', () => {
+    const req = {
+      info: {
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+      },
+      params: {
+        id: 'sadadas',
+      },
+    } as unknown as RequestPlus;
     test('Then it should delete manga from kart ', async () => {
-      const req = {
-        info: {
-          id: 'asda',
-          email: 'asda',
-          role: 'user',
-        },
-        params: {
-          id: 'sadadas',
-        },
-      } as unknown as RequestPlus;
-
       (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUserAddManga);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
@@ -337,17 +324,6 @@ describe('Given the UserController ', () => {
       expect(next).toHaveBeenCalled();
     });
     test('Then it tries to find a manga that doesnt exists it should throw an error', async () => {
-      const req = {
-        info: {
-          id: 'asda',
-          email: 'asda',
-          role: 'user',
-        },
-        params: {
-          id: '123',
-        },
-      } as unknown as RequestPlus;
-
       (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUser);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue(undefined);
