@@ -3,8 +3,6 @@ import { MangaRepo } from '../repository/manga/manga.repo.interface';
 import { MangaController } from './manga.controller';
 import { Request, Response } from 'express';
 
-jest.mock('../services/auth');
-
 describe('Given the UserController ', () => {
   const mockRepo = {
     getAllMangas: jest.fn(),

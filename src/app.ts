@@ -20,7 +20,7 @@ app.get('/', (_req, resp) => {
     name: 'Bear Books API',
     routes: {
       user: {
-        route: '/user',
+        route: '/users',
         userRoutes: {
           login: '/login',
           register: '/register',

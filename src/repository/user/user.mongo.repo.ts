@@ -27,18 +27,32 @@ export class UserMongoRepo implements UserRepo<User> {
   }
 
   async queryID(id: string): Promise<User> {
+    debug(id, 'ID');
     const data = await UserModel.findById(id);
     if (!data) throw new HTTPError(404, 'Not found', 'Id not found');
+    if (data.id === undefined) {
+      data.id = data._id;
+    }
+
+    console.log('REPO MANGA QUERYID', data);
     return data;
   }
 
   async search(query: { key: string; value: unknown }): Promise<User[]> {
     const data = await UserModel.find({ [query.key]: query.value });
-    return data;
+    debug('Data Results', data);
+    const result = data.map((item: any) => ({
+      ...item._doc,
+      id: item._id.toString(),
+    }));
+    debug('Search Results', result);
+    return result;
   }
 
   async create(info: Partial<User>): Promise<User> {
     const data = await UserModel.create(info);
+    debug('REPO USER', data);
+    data.id = data._id;
     return data;
   }
 

@@ -29,6 +29,10 @@ export class MangaMongoRepo implements MangaRepo<Manga> {
   async getOneManga(id: string): Promise<Manga> {
     const data = await MangaModel.findById(id);
     if (!data) throw new HTTPError(404, 'Not found', 'Id not found');
+    if (data.id === undefined) {
+      data.id = data._id;
+    }
+
     return data;
   }
 

@@ -2,11 +2,6 @@ import { Schema, model } from 'mongoose';
 import { Manga } from '../../entities/manga.js';
 
 const mangaSchema = new Schema<Manga>({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   author: {
     type: String,
     required: true,
@@ -44,6 +39,8 @@ const mangaSchema = new Schema<Manga>({
 mangaSchema.set('toJSON', {
   transform(_document, returnedObject) {
     returnedObject.id = returnedObject._id;
+    delete returnedObject.__v;
+    delete returnedObject._id;
   },
 });
 

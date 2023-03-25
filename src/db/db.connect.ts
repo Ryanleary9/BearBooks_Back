@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { config } from '../config.js';
 import createDebug from 'debug';
-const debug = createDebug('DB: ');
+const debug = createDebug('DB:Connect');
 
 const { cluster, name, passwd, user } = config;
 
