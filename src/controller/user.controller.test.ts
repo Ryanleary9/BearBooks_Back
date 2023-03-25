@@ -1,4 +1,7 @@
+import { Manga } from '../entities/manga';
 import { User } from '../entities/user';
+import { RequestPlus } from '../interceptors/auth.interceptors';
+import { MangaRepo } from '../repository/manga/manga.repo.interface';
 import { UserRepo } from '../repository/user/user.repo.interface';
 import { Auth } from '../services/auth';
 import { UsersController } from './user.controller';
@@ -16,7 +19,16 @@ describe('Given the UserController ', () => {
     delete: jest.fn(),
   } as unknown as UserRepo<User>;
 
-  const controller = new UsersController(mockRepo);
+  const mockMangaRepo = {
+    getAllMangas: jest.fn(),
+    getOneManga: jest.fn(),
+    searchManga: jest.fn(),
+    createManga: jest.fn(),
+    updateManga: jest.fn(),
+    deleteManga: jest.fn(),
+  } as unknown as MangaRepo<Manga>;
+
+  const controller = new UsersController(mockRepo, mockMangaRepo);
 
   const resp = {
     json: jest.fn(),
@@ -165,6 +177,263 @@ describe('Given the UserController ', () => {
       (mockRepo.search as jest.Mock).mockResolvedValue([]);
 
       await controller.login(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe('when the add to kart method is used', () => {
+    test('Then it should add manga to kart ', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: 'sadadas',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: 'sadadas',
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: ['sadadas'],
+      });
+
+      await controller.addMangaKart(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then it should add manga to kart ', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: undefined,
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: undefined,
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [undefined],
+      });
+
+      await controller.addMangaKart(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then it should add manga to kart ', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: '123',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue(undefined);
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      await controller.addMangaKart(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then it should add manga to kart ', async () => {
+      const req = {
+        params: {
+          id: '123',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({});
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: '2',
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({});
+
+      await controller.addMangaKart(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+  });
+  describe('Given the delete kart mehtod', () => {
+    test('Then it should delete manga from kart ', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: 'sadadas',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: ['sadadas'],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: 'sadadas',
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      await controller.deleteKartManga(req, resp, next);
+      expect(resp.status).toHaveBeenCalled();
+      expect(resp.json).toHaveBeenCalled();
+    });
+    test('Then when its not given any data in the info payload it should throw an error ', async () => {
+      const req = {
+        params: {
+          id: 'sadadas',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: ['sadadas'],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: 'sadadas',
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      await controller.deleteKartManga(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then it tries to find a manga that doesnt exists it should throw an error', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: '123',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue(undefined);
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+
+      await controller.deleteKartManga(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then it tries to find a manga with the wrong id it should throw an error ', async () => {
+      const req = {
+        params: {
+          id: '123',
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({});
+
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: '2',
+      });
+
+      (mockRepo.update as jest.Mock).mockResolvedValue({});
+
+      await controller.deleteKartManga(req, resp, next);
+      expect(next).toHaveBeenCalled();
+    });
+    test('Then when there isnt a id in params it should throw an error ', async () => {
+      const req = {
+        info: {
+          id: 'asda',
+          email: 'asda',
+          role: 'user',
+        },
+        params: {
+          id: undefined,
+        },
+      } as unknown as RequestPlus;
+
+      (mockRepo.queryID as jest.Mock).mockResolvedValue({
+        id: 'asda',
+        email: 'asda',
+        role: 'user',
+        kart: [],
+      });
+      (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
+        id: undefined,
+      });
+
+      await controller.deleteKartManga(req, resp, next);
       expect(next).toHaveBeenCalled();
     });
   });
