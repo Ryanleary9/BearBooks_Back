@@ -29,6 +29,16 @@ describe('Given the User Repo ', () => {
       expect(MangaModel.findById).toHaveBeenCalled();
       expect(result).toEqual({ id: '1' });
     });
+    test('Then it should return a user ', async () => {
+      (MangaModel.findById as jest.Mock).mockResolvedValue({
+        id: undefined,
+        _id: '1',
+      });
+      const id = '1';
+      const result = await repo.getOneManga(id);
+      expect(MangaModel.findById).toHaveBeenCalled();
+      expect(result).toEqual({ id: '1', _id: '1' });
+    });
   });
   describe('When the method queryID is used and the id is wrong', () => {
     test('Then it should throw an error ', async () => {
