@@ -44,6 +44,13 @@ describe('Given the UserController ', () => {
     kart: [],
   };
 
+  const mockUserAddManga = {
+    id: 'asda',
+    email: 'asda',
+    role: 'user',
+    kart: ['sadadas'],
+  };
+
   describe('When query method is called  ', () => {
     const req = {} as unknown as Request;
     test('Then if the user information is completed, resp.json should be called ', async () => {
@@ -299,23 +306,13 @@ describe('Given the UserController ', () => {
         },
       } as unknown as RequestPlus;
 
-      (mockRepo.queryID as jest.Mock).mockResolvedValue({
-        id: 'asda',
-        email: 'asda',
-        role: 'user',
-        kart: ['sadadas'],
-      });
+      (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUserAddManga);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
         id: 'sadadas',
       });
 
-      (mockRepo.update as jest.Mock).mockResolvedValue({
-        id: 'asda',
-        email: 'asda',
-        role: 'user',
-        kart: [],
-      });
+      (mockRepo.update as jest.Mock).mockResolvedValue(mockUser);
 
       await controller.deleteKartManga(req, resp, next);
       expect(resp.status).toHaveBeenCalled();
@@ -328,12 +325,7 @@ describe('Given the UserController ', () => {
         },
       } as unknown as RequestPlus;
 
-      (mockRepo.queryID as jest.Mock).mockResolvedValue({
-        id: 'asda',
-        email: 'asda',
-        role: 'user',
-        kart: ['sadadas'],
-      });
+      (mockRepo.queryID as jest.Mock).mockResolvedValue(mockUserAddManga);
 
       (mockMangaRepo.getOneManga as jest.Mock).mockResolvedValue({
         id: 'sadadas',
