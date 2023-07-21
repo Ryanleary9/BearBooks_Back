@@ -66,7 +66,7 @@ export class UsersController {
       const token = Auth.createJWT(payload);
       resp.status(202);
       resp.json({
-        results: [token],
+        results: [token, data[0]],
       });
     } catch (error) {
       next(error);
