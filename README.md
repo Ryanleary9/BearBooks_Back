@@ -1,4 +1,4 @@
-# Bookstore Backend
+# BearBooks Backend
 
 ## Overview
 
