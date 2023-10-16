@@ -4,6 +4,12 @@
 
 This repository contains the backend for the bookstore final project developed during the ISDI Coders Bootcamp. It serves as the server-side component for managing bookstore-related functionalities.
 
+## Technologies Used
+
+- Node.js
+- Express
+- Mongoose
+
 ## Getting Started
 
 To set up and run the backend locally, follow these steps:
